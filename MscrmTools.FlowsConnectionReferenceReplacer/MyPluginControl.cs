@@ -1,4 +1,5 @@
-﻿using Microsoft.Xrm.Sdk;
+﻿using McTools.Xrm.Connection;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Tooling.Connector;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,15 @@ namespace MscrmTools.FlowsConnectionReferenceReplacer
                     crsTarget.DisplayConnectionReferences();
                 }
             });
+        }
+
+        public override void UpdateConnection(IOrganizationService newService, ConnectionDetail detail, string actionName, object parameter)
+        {
+            crsTarget.Reset();
+            crsSource.Reset();
+            wccr.Reset();
+
+            base.UpdateConnection(newService, detail, actionName, parameter);
         }
 
         private void crsSource_OnSelectionChanged(object sender, EventArgs e)

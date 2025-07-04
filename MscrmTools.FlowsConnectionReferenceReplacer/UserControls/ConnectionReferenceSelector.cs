@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using System.Workflow.ComponentModel.Design;
 
 namespace MscrmTools.FlowsConnectionReferenceReplacer.UserControls
 {
@@ -70,6 +69,15 @@ namespace MscrmTools.FlowsConnectionReferenceReplacer.UserControls
             }).Entities.ToList();
 
             GetListViewItems();
+        }
+
+        public void Reset()
+        {
+            connectionReferences = null;
+            items = null;
+            filteredConnector = "";
+
+            lvConnectionRefs.Items.Clear();
         }
 
         internal void Filter(string connector)

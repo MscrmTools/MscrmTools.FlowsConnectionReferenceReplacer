@@ -80,6 +80,14 @@ namespace MscrmTools.FlowsConnectionReferenceReplacer.UserControls
             flows = service.RetrieveMultiple(query).Entities.ToList();
         }
 
+        public void Reset()
+        {
+            flows = null;
+            sourceConnectionReferences = null;
+
+            lvFlows.Items.Clear();
+        }
+
         private void commandBar1_OnClear(object sender, System.EventArgs e)
         {
             foreach (ListViewItem item in lvFlows.Items)
