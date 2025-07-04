@@ -34,18 +34,18 @@ namespace MscrmTools.FlowsConnectionReferenceReplacer.UserControls
             lvFlows.Items.Clear();
             lvFlows.Items.AddRange(flows
                 .Where(f =>
-                        (txtSearch.Text.Length == 0 || f.GetAttributeValue<string>("name").ToLower().IndexOf(txtSearch.Text.ToLower()) >= 0)
+                        (commandBar1.Text.Length == 0 || f.GetAttributeValue<string>("name").ToLower().IndexOf(commandBar1.Text.ToLower()) >= 0)
                         && sourceConnectionReferences.Any(scr => f.GetAttributeValue<string>("clientdata").IndexOf(scr.GetAttributeValue<string>("connectionreferencelogicalname")) > 0 && scr.GetAttributeValue<string>("connectionreferencelogicalname") != targetCr)
                         )
                 .Select(f => new ListViewItem(f.GetAttributeValue<string>("name"))
-            {
-                Checked = true,
-                Tag = f,
-                SubItems =
+                {
+                    Checked = true,
+                    Tag = f,
+                    SubItems =
                 {
                     new ListViewItem.ListViewSubItem
                     {
-                        Text = string.Join(", ", sourceConnectionReferences.Where(scr => 
+                        Text = string.Join(", ", sourceConnectionReferences.Where(scr =>
                         f.GetAttributeValue<string>("clientdata").IndexOf(scr.GetAttributeValue<string>("connectionreferencelogicalname")) > 0)
                         .Select(cr => cr.GetAttributeValue<string>("connectionreferencelogicalname")))
                     },
@@ -54,13 +54,12 @@ namespace MscrmTools.FlowsConnectionReferenceReplacer.UserControls
                         Text = targetCr
                     }
                 }
-            }).ToArray());
+                }).ToArray());
 
-            if(lvFlows.Items.Count > 0)
+            if (lvFlows.Items.Count > 0)
                 lvFlows.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             else
                 lvFlows.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
         }
 
         public void LoadFlows(List<Entity> sourceConnectionReferences, IOrganizationService service)
@@ -81,12 +80,7 @@ namespace MscrmTools.FlowsConnectionReferenceReplacer.UserControls
             flows = service.RetrieveMultiple(query).Entities.ToList();
         }
 
-        private void FlowWithConnectionRefReplacementList_Load(object sender, System.EventArgs e)
-        {
-            lvFlows.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-        }
-
-        private void llClearAll_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void commandBar1_OnClear(object sender, System.EventArgs e)
         {
             foreach (ListViewItem item in lvFlows.Items)
             {
@@ -94,12 +88,22 @@ namespace MscrmTools.FlowsConnectionReferenceReplacer.UserControls
             }
         }
 
-        private void llSelectAll_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void commandBar1_OnSearchTextChanged(object sender, System.EventArgs e)
+        {
+            Display();
+        }
+
+        private void commandBar1_OnSelectAll(object sender, System.EventArgs e)
         {
             foreach (ListViewItem item in lvFlows.Items)
             {
                 item.Checked = true;
             }
+        }
+
+        private void FlowWithConnectionRefReplacementList_Load(object sender, System.EventArgs e)
+        {
+            lvFlows.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         private void lvFlows_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -111,11 +115,6 @@ namespace MscrmTools.FlowsConnectionReferenceReplacer.UserControls
 
             lvFlows.ListViewItemSorter = new ListViewItemComparer(e.Column, lvFlows.Sorting);
             sortingColumnIndex = e.Column;
-        }
-
-        private void txtSearch_TextChanged(object sender, System.EventArgs e)
-        {
-            Display();
         }
     }
 }
