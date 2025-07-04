@@ -39,7 +39,6 @@ namespace MscrmTools.FlowsConnectionReferenceReplacer.UserControls
                         )
                 .Select(f => new ListViewItem(f.GetAttributeValue<string>("name"))
                 {
-                    Checked = true,
                     Tag = f,
                     SubItems =
                 {
