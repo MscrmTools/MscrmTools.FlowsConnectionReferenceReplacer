@@ -231,6 +231,10 @@
   <ItemGroup>
     <None Include="Resources\Startup32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\RefConUpdater32.png" />
+    <Content Include="Resources\RefConUpdater80.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
